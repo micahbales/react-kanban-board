@@ -1,4 +1,5 @@
 import React from 'react';
+import {map} from 'lodash';
 
 function ColumnHeader(props) {
     const headerStyle = {backgroundColor: props.headerColor}
@@ -12,8 +13,8 @@ function ColumnHeader(props) {
 
 function Card(props) {
     return (
-        <div className="card">
-            <div className="card__text">{props.text}</div>
+        <div className="card" data-card-id={props.card.id}>
+            <div className="card__text">{props.card.text}</div>
         </div>
     );
 }
@@ -26,8 +27,8 @@ class Column extends React.Component {
               <ColumnHeader className="column__header" title={this.props.title} headerColor={this.props.headerColor} />
               <div className="column__cards">
                 {
-                  this.props.cardText.map((text, i) => {
-                    return <Card text={text} key={i} />
+                  map(this.props.cards, (card, i) => {
+                    return <Card card={card} key={i} />
                   })
                 }
               </div>

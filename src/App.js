@@ -1,15 +1,62 @@
 import React from 'react';
 import './App.css';
 import Column from './Column';
+import {map} from 'lodash';
 
 class App extends React.Component {
+
+  defaultCards = [
+    {
+      id: 1,
+      title: 'First',
+      text: 'one two three'
+    },
+    {
+      id: 2,
+      title: 'Second',
+      text: 'four five six'
+    },
+    {
+      id: 3,
+      title: 'Third',
+      text: 'seven eight nine'
+    },
+    {
+      id: 4,
+      title: 'Fourth',
+      text: 'ten eleven twelve'
+    },
+  ];
 
   state = {
     // This is default data that should be set if there's no state in local storage
     // If local storage has state for us, use that instead
-    columnHeaderColors: ["#8E6E95", "#39A59C", "#344759", "#E8741E"],
-    cardTitles: ["first", "second", "third", "fourth"],
-    cardText: ["one two three", "four five six"]
+    columns: [
+      {
+        id: 1,
+        headerColor: '#8E6E95',
+        cards: this.defaultCards,
+        title: 'First Column'
+      },
+      {
+        id: 2,
+        headerColor: '#39A59C',
+        cards: this.defaultCards,
+        title: 'Second Column'
+      },
+      {
+        id: 3,
+        headerColor: '#344759',
+        cards: this.defaultCards,
+        title: 'Third Column'
+      },
+      {
+        id: 4,
+        headerColor: '#E8741E',
+        cards: this.defaultCards,
+        title: 'Fourth Column'
+      },
+    ]
   }
 
   constructor() {
@@ -32,12 +79,12 @@ class App extends React.Component {
     return (
       <div className="app">
         {
-          this.state.cardTitles.map((title, i) => {
+          map(this.state.columns, (column, i) => {
             return <Column 
-              title={title} 
+              title={column.title} 
               key={i} 
-              headerColor={this.state.columnHeaderColors[i]}
-              cardText={this.state.cardText}
+              headerColor={column.headerColor}
+              cards={column.cards}
               addCard={this.addCard}
             />
           })

@@ -1,44 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
+import Column from './Column';
 
-
-function ColumnHeader(props) {
-  return (
-    <div className={`column-header ${props.headerColor}`}>
-      <span className="column-title white">{props.title}</span>
-    </div>
-  );
-}
-
-
-function Card(props) {
-  return (
-    <div className="card">
-      <div className="card-text">{props.text}</div>
-    </div>
-  );
-}
-
-
-function Column(props) {
-    return (
-      <div className="column">
-        <ColumnHeader className="column-header" title={props.title} headerColor={props.headerColor} />
-        <div className="column-cards">
-          {
-            props.placeholderText.map((text, i) => {
-              return <Card text={text} key={i} />
-            })
-          }
-        </div>
-        <div className="add-card-button" onClick={props.addCard}>
-          + Add Card
-        </div>
-      </div>
-    );
-}
-
-class App extends Component {
+class App extends React.Component {
 
   state = {
     columnHeaderColors: ["purple", "turqoise", "navy", "orange"],
@@ -62,7 +26,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="app">
         {
           this.state.placeholderTitles.map((title, i) => {
             return <Column 

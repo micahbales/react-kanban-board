@@ -1,26 +1,21 @@
-.purple {
-  background-color: #8E6E95;
-}
+/* .purple {background-color: #8E6E95;}
 
-.turqoise {
-  background-color: #39A59C;
-}
+.turqoise {background-color: #39A59C;}
 
-.navy {
-  background-color: #344759;
-}
+.navy {background-color: #344759;}
 
-.orange {
-  background-color: #E8741E;
-}
+.orange {background-color: #E8741E;}
 
-.white {
-  color: #f0f0f0;
+.white {color: #f0f0f0;} */
+
+.app {
+  display: flex;
 }
 
 .column {
   display: flex;
   flex-wrap: wrap;
+  margin: 25px;
 }
 
 .column-header {

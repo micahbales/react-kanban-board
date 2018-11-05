@@ -1,23 +1,37 @@
-/* .purple {background-color: #8E6E95;}
 
-.turqoise {background-color: #39A59C;}
-
-.navy {background-color: #344759;}
-
-.orange {background-color: #E8741E;}
-
-.white {color: #f0f0f0;} */
 
 .app {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .column {
   display: flex;
   flex-wrap: wrap;
+  flex-basis: 25%;
   margin: 25px;
 }
 
-.column-header {
+.column__header {
+  border: 1px solid gray;
+  text-align: center;
   width: 100%;
 }
+
+.column__cards {
+  flex-basis: 100%;
+}
+
+.column__add-card-button {
+  cursor: pointer;
+}
+
+.card {
+  border: 1px solid gray;
+  min-width: 300px;
+  padding: 5px;
+  margin: 2px 0px;
+  text-align: center;
+}
+
+.text--white {color: #f0f0f0;}

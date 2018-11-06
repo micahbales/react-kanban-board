@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Column from './Column';
 import AddCardModal from './AddCardModal';
+import DeleteCardModal from './DeleteCardModal';
 import {map, filter, find} from 'lodash';
 
 class App extends React.Component {
@@ -63,6 +64,10 @@ class App extends React.Component {
     columns: [],
     addCardState: {
       columnId: null
+    },
+    deleteCardState: {
+      columnId: null,
+      cardOrder: null
     }
   };
 
@@ -80,6 +85,7 @@ class App extends React.Component {
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleDeleteCard = this.handleDeleteCard.bind(this);
     this.handleAddCardModalOpen = this.handleAddCardModalOpen.bind(this);
+    this.handleDeleteCardModalOpen = this.handleDeleteCardModalOpen.bind(this);
   }
 
   updateStateAndLocalStorage(state) {
@@ -89,7 +95,7 @@ class App extends React.Component {
 
   handleAddCard(e) {
     e.preventDefault();
-    
+
     const columnId = this.state.addCardState.columnId;
     const state = Object.assign(this.state, {});
     const column = find(state.columns, {id: columnId});
@@ -110,11 +116,11 @@ class App extends React.Component {
   }
 
   handleDeleteCard(e) {
-    const columnId = Number(e.currentTarget
-      .parentElement.parentElement.parentElement
-      .getAttribute('data-column-id'));
-    const cardOrder = Number(e.currentTarget.parentElement.getAttribute('data-card-order'));
+    e.preventDefault();
+
     const state = Object.assign({}, this.state);
+    const columnId = this.state.deleteCardState.columnId;
+    const cardOrder = this.state.deleteCardState.cardOrder;
     const column = find(state.columns, {id: columnId});
     
     // Remove deleted card from state
@@ -124,6 +130,7 @@ class App extends React.Component {
     );
     
     this.updateStateAndLocalStorage(state);
+    this.handleDeleteCardModalClose();
   }
 
   handleAddCardModalOpen(e) {
@@ -143,6 +150,26 @@ class App extends React.Component {
         });
   }
 
+  handleDeleteCardModalOpen(e) {
+    const columnId = Number(e.currentTarget
+      .parentElement.parentElement.parentElement
+      .getAttribute('data-column-id'));
+    const cardOrder = Number(e.currentTarget.parentElement.getAttribute('data-card-order'));
+    const state = Object.assign({}, this.state);
+    
+    state.deleteCardState.columnId = columnId;
+    state.deleteCardState.cardOrder = cardOrder;
+    
+    this.updateStateAndLocalStorage(state);
+    document.querySelector('.modal.delete-card-modal')
+        .classList.remove('hidden');
+  }
+
+  handleDeleteCardModalClose() {
+    document.querySelector('.modal.delete-card-modal')
+        .classList.add('hidden');
+  }
+
   render() {
     return (
       <div className="app">
@@ -150,13 +177,17 @@ class App extends React.Component {
         handleAddCardModalClose={this.handleAddCardModalClose}
         handleAddCard={this.handleAddCard}
       />
+      <DeleteCardModal 
+        handleDeleteCardModalClose={this.handleDeleteCardModalClose}
+        handleDeleteCard={this.handleDeleteCard}
+      />
         {
           map(this.state.columns, (column, i) => {
             return <Column 
               column={column}
               key={i} 
               handleAddCardModalOpen={this.handleAddCardModalOpen}
-              handleDeleteCard={this.handleDeleteCard}
+              handleDeleteCardModalOpen={this.handleDeleteCardModalOpen}
             />
           })
         }

@@ -5,7 +5,7 @@ class Card extends React.Component {
         return (
             <div className="card" data-card-order={this.props.card.order}>
                 <div className="card__text">{this.props.card.text}</div>
-                <button className="card__delete-button" onClick={this.props.handleDeleteCard}>DELETE</button>
+                <button className="card__delete-button" onClick={this.props.handleDeleteCardModalOpen}>DELETE</button>
             </div>
         );
     }

@@ -13,7 +13,7 @@ class AddCardModal extends React.Component {
                         <h2>Enter Your Text</h2>
                         <div className="input-row">
                             <input type="text" autoComplete="off" id="text" 
-                                    placeholder="Text" className="modal-input" autofocus />
+                                    placeholder="Text" className="modal-input" />
                         </div>
         
                         <button className="button add-card-modal__submit" 

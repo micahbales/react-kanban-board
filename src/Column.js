@@ -22,7 +22,7 @@ class Column extends React.Component {
                     return <Card
                             card={card}
                             key={i}
-                            handleDeleteCard={this.props.handleDeleteCard}
+                            handleDeleteCardModalOpen={this.props.handleDeleteCardModalOpen}
                             handleAddCardModelClose={this.props.handleAddCardModelClose}
                         />
                   })

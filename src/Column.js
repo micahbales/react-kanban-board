@@ -19,15 +19,16 @@ class Column extends React.Component {
               <div className="column__cards">
                 {
                   map(this.props.column.cards, (card, i) => {
-                    return <Card 
-                            card={card} 
-                            key={i} 
-                            handleDeleteCard={this.props.handleDeleteCard} 
+                    return <Card
+                            card={card}
+                            key={i}
+                            handleDeleteCard={this.props.handleDeleteCard}
+                            handleAddCardModelClose={this.props.handleAddCardModelClose}
                         />
                   })
                 }
               </div>
-              <div className="column__add-card-button" onClick={this.props.handleAddCard}>
+              <div className="column__add-card-button" onClick={this.props.handleAddCardModalOpen}>
                 + add card
               </div>
             </div>

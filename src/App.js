@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Column from './Column';
+import AddCardModal from './AddCardModal';
 import {map, filter, find} from 'lodash';
 
 class App extends React.Component {
@@ -52,10 +53,18 @@ class App extends React.Component {
         cards: this.defaultCards,
         title: 'Fourth Column'
       },
-    ]
+    ],
+    addCardState: {
+      columnId: null
+    }
   }
 
-  state = {};
+  state = {
+    columns: [],
+    addCardState: {
+      columnId: null
+    }
+  };
 
   componentDidMount() {
     const localStorageState = localStorage.getItem('react-kanban-board-state');
@@ -70,6 +79,7 @@ class App extends React.Component {
     super();
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleDeleteCard = this.handleDeleteCard.bind(this);
+    this.handleAddCardModalOpen = this.handleAddCardModalOpen.bind(this);
   }
 
   updateStateAndLocalStorage(state) {
@@ -78,10 +88,12 @@ class App extends React.Component {
   }
 
   handleAddCard(e) {
-    const columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
+    e.preventDefault();
+    
+    const columnId = this.state.addCardState.columnId;
     const state = Object.assign(this.state, {});
     const column = find(state.columns, {id: columnId});
-    const text = prompt('Enter your text');
+    const text = e.currentTarget.parentElement.querySelector('#text').value;
     if (!text) return;
 
     // Set order for new card
@@ -94,6 +106,7 @@ class App extends React.Component {
     });
 
     this.updateStateAndLocalStorage(state);
+    this.handleAddCardModalClose();
   }
 
   handleDeleteCard(e) {
@@ -113,15 +126,36 @@ class App extends React.Component {
     this.updateStateAndLocalStorage(state);
   }
 
+  handleAddCardModalOpen(e) {
+    const state = Object.assign(this.state, {});
+    state.addCardState.columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
+    this.setState(state);
+    document.querySelector('.modal.add-card-modal')
+        .classList.remove('hidden');
+  }
+
+  handleAddCardModalClose() {
+    document.querySelector('.modal.add-card-modal')
+        .classList.add('hidden');
+    document.querySelectorAll('.add-card-modal input')
+        .forEach((input) => {
+          input.value = null;
+        });
+  }
+
   render() {
     return (
       <div className="app">
+      <AddCardModal 
+        handleAddCardModalClose={this.handleAddCardModalClose}
+        handleAddCard={this.handleAddCard}
+      />
         {
           map(this.state.columns, (column, i) => {
             return <Column 
               column={column}
               key={i} 
-              handleAddCard={this.handleAddCard}
+              handleAddCardModalOpen={this.handleAddCardModalOpen}
               handleDeleteCard={this.handleDeleteCard}
             />
           })

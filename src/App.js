@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Column from './Column';
-import {map, find} from 'lodash';
+import {map, filter, find} from 'lodash';
 
 class App extends React.Component {
 
@@ -29,7 +29,7 @@ class App extends React.Component {
     // If local storage has state for us, use that instead
     columns: [
       {
-        id: 1,
+        id: 3,
         headerColor: '#8E6E95',
         cards: this.defaultCards,
         title: 'First Column'
@@ -41,13 +41,13 @@ class App extends React.Component {
         title: 'Second Column'
       },
       {
-        id: 3,
+        id: 1,
         headerColor: '#344759',
         cards: this.defaultCards,
         title: 'Third Column'
       },
       {
-        id: 4,
+        id: 0,
         headerColor: '#E8741E',
         cards: this.defaultCards,
         title: 'Fourth Column'
@@ -62,31 +62,55 @@ class App extends React.Component {
     if (localStorageState) {
       this.setState(JSON.parse(localStorageState));
     } else {
-      this.setState(this.defaultState);
-      localStorage.setItem('react-kanban-board-state', JSON.stringify(this.defaultState));
+      this.updateStateAndLocalStorage(this.defaultState);
     }
   }
 
   constructor() {
     super();
-    
-    this.addCard = this.addCard.bind(this);
+    this.handleAddCard = this.handleAddCard.bind(this);
+    this.handleDeleteCard = this.handleDeleteCard.bind(this);
   }
 
-  addCard(e) {
+  updateStateAndLocalStorage(state) {
+    this.setState(state);
+    localStorage.setItem('react-kanban-board-state', JSON.stringify(this.state));
+  }
+
+  handleAddCard(e) {
     const columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
     const state = Object.assign(this.state, {});
     const column = find(state.columns, {id: columnId});
     const text = prompt('Enter your text');
     if (!text) return;
 
+    // Set order for new card
+    const lastCard = column.cards[column.cards.length - 1];
+    const newCardOrder = lastCard ? lastCard.order + 1 : 0;
+    // Add new card to state
     column.cards.push({
-      order: 5,
+      order: newCardOrder,
       text: text
     });
 
-    this.setState(state);
-    localStorage.setItem('react-kanban-board-state', JSON.stringify(this.state));
+    this.updateStateAndLocalStorage(state);
+  }
+
+  handleDeleteCard(e) {
+    const columnId = Number(e.currentTarget
+      .parentElement.parentElement.parentElement
+      .getAttribute('data-column-id'));
+    const cardOrder = Number(e.currentTarget.parentElement.getAttribute('data-card-order'));
+    const state = Object.assign({}, this.state);
+    const column = find(state.columns, {id: columnId});
+    
+    // Remove deleted card from state
+    column.cards = filter(
+      column.cards, 
+      (card) => card.order !== cardOrder
+    );
+    
+    this.updateStateAndLocalStorage(state);
   }
 
   render() {
@@ -97,7 +121,8 @@ class App extends React.Component {
             return <Column 
               column={column}
               key={i} 
-              addCard={this.addCard}
+              handleAddCard={this.handleAddCard}
+              handleDeleteCard={this.handleDeleteCard}
             />
           })
         }

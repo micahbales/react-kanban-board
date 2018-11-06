@@ -1,34 +1,30 @@
 import React from 'react';
 import './App.css';
 import Column from './Column';
-import {map} from 'lodash';
+import {map, find} from 'lodash';
 
 class App extends React.Component {
 
   defaultCards = [
     {
-      id: 1,
-      title: 'First',
+      order: 0,
       text: 'one two three'
     },
     {
-      id: 2,
-      title: 'Second',
+      order: 1,
       text: 'four five six'
     },
     {
-      id: 3,
-      title: 'Third',
+      order: 2,
       text: 'seven eight nine'
     },
     {
-      id: 4,
-      title: 'Fourth',
+      order: 3,
       text: 'ten eleven twelve'
     },
   ];
 
-  state = {
+  defaultState = {
     // This is default data that should be set if there's no state in local storage
     // If local storage has state for us, use that instead
     columns: [
@@ -59,20 +55,38 @@ class App extends React.Component {
     ]
   }
 
+  state = {};
+
+  componentDidMount() {
+    const localStorageState = localStorage.getItem('react-kanban-board-state');
+    if (localStorageState) {
+      this.setState(JSON.parse(localStorageState));
+    } else {
+      this.setState(this.defaultState);
+      localStorage.setItem('react-kanban-board-state', JSON.stringify(this.defaultState));
+    }
+  }
+
   constructor() {
     super();
+    
     this.addCard = this.addCard.bind(this);
   }
 
-  addCard() {
-    const text = prompt('enter your text');
+  addCard(e) {
+    const columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
     const state = Object.assign(this.state, {});
+    const column = find(state.columns, {id: columnId});
+    const text = prompt('Enter your text');
+    if (!text) return;
 
-    if (text) {
-      // should be something like state.card[cardId].push(text)
-      state.cardText.push(text);
-      this.setState(state);
-    }
+    column.cards.push({
+      order: 5,
+      text: text
+    });
+
+    this.setState(state);
+    localStorage.setItem('react-kanban-board-state', JSON.stringify(this.state));
   }
 
   render() {
@@ -81,10 +95,8 @@ class App extends React.Component {
         {
           map(this.state.columns, (column, i) => {
             return <Column 
-              title={column.title} 
+              column={column}
               key={i} 
-              headerColor={column.headerColor}
-              cards={column.cards}
               addCard={this.addCard}
             />
           })

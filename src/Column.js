@@ -23,11 +23,11 @@ class Column extends React.Component {
 
     render () {
         return (
-            <div className="column">
-              <ColumnHeader className="column__header" title={this.props.title} headerColor={this.props.headerColor} />
+            <div className="column" data-column-id={this.props.column.id}>
+              <ColumnHeader className="column__header" title={this.props.column.title} headerColor={this.props.column.headerColor} />
               <div className="column__cards">
                 {
-                  map(this.props.cards, (card, i) => {
+                  map(this.props.column.cards, (card, i) => {
                     return <Card card={card} key={i} />
                   })
                 }

@@ -5,7 +5,7 @@ import AddCardModal from './modals/AddCardModal';
 import DeleteCardModal from './modals/DeleteCardModal';
 import AddColumnModal from './modals/AddColumnModal';
 import DeleteColumnModal from './modals/DeleteColumnModal';
-import {map, filter, find, reduce} from 'lodash';
+import {map, filter, find, reduce, sortBy} from 'lodash';
 
 class App extends React.Component {
 
@@ -34,24 +34,28 @@ class App extends React.Component {
     columns: [
       {
         id: 3,
+        order: 0,
         headerColor: '#8E6E95',
         cards: this.defaultCards,
         title: 'First Column'
       },
       {
         id: 2,
+        order: 1,
         headerColor: '#39A59C',
         cards: this.defaultCards,
         title: 'Second Column'
       },
       {
         id: 1,
+        order: 2,
         headerColor: '#344759',
         cards: this.defaultCards,
         title: 'Third Column'
       },
       {
         id: 0,
+        order: 3,
         headerColor: '#E8741E',
         cards: this.defaultCards,
         title: 'Fourth Column'
@@ -185,13 +189,16 @@ class App extends React.Component {
     const title = e.currentTarget.parentElement.querySelector('#title').value;
     if (!title) return;
 
-    // Set id for new column
+    // Set id & order for new column
     const highestExistingId = reduce(state.columns, (num, column) => column.id >= num ? column.id : num, 0);
     const columnId = highestExistingId + 1;
+    const highestExistingOrder = reduce(state.columns, (num, column) => column.order >= num ? column.order : num, 0);
+    const columnOrder = highestExistingOrder + 1;
 
     // Add new card to state
     state.columns.push({
       id: columnId,
+      order: columnOrder,
       title: title,
       headerColor: '#8E6E95',
       cards: []
@@ -263,7 +270,7 @@ class App extends React.Component {
           handleDeleteColumn={this.handleDeleteColumn}
         />
         {
-          map(this.state.columns, (column, i) => {
+          map(sortBy(this.state.columns, 'order'), (column, i) => {
             return <Column 
               column={column}
               key={i} 

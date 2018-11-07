@@ -1,5 +1,5 @@
 import React from 'react';
-import {map} from 'lodash';
+import {map, sortBy} from 'lodash';
 import Card from './Card';
 
 function ColumnHeader(props) {
@@ -18,7 +18,7 @@ class Column extends React.Component {
               <ColumnHeader className="column__header" title={this.props.column.title} headerColor={this.props.column.headerColor} />
               <div className="column__cards">
                 {
-                  map(this.props.column.cards, (card, i) => {
+                  map(sortBy(this.props.column.cards, 'order'), (card, i) => {
                     return <Card
                             card={card}
                             key={i}

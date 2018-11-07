@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 import Column from './Column';
-import AddCardModal from './AddCardModal';
-import DeleteCardModal from './DeleteCardModal';
-import {map, filter, find} from 'lodash';
+import AddCardModal from './modals/AddCardModal';
+import DeleteCardModal from './modals/DeleteCardModal';
+import AddColumnModal from './modals/AddColumnModal';
+import {map, filter, find, reduce} from 'lodash';
 
 class App extends React.Component {
 
@@ -83,14 +84,15 @@ class App extends React.Component {
   constructor() {
     super();
     this.handleAddCard = this.handleAddCard.bind(this);
-    this.handleDeleteCard = this.handleDeleteCard.bind(this);
     this.handleAddCardModalOpen = this.handleAddCardModalOpen.bind(this);
+    this.handleDeleteCard = this.handleDeleteCard.bind(this);
     this.handleDeleteCardModalOpen = this.handleDeleteCardModalOpen.bind(this);
+    this.handleAddColumn = this.handleAddColumn.bind(this);
   }
 
   updateStateAndLocalStorage(state) {
     this.setState(state);
-    localStorage.setItem('react-kanban-board-state', JSON.stringify(this.state));
+    localStorage.setItem('react-kanban-board-state', JSON.stringify(state));
   }
 
   handleAddCard(e) {
@@ -115,6 +117,23 @@ class App extends React.Component {
     this.handleAddCardModalClose();
   }
 
+  handleAddCardModalOpen(e) {
+    const state = Object.assign(this.state, {});
+    state.addCardState.columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
+    this.setState(state);
+    document.querySelector('.modal.add-card-modal')
+        .classList.remove('hidden');
+  }
+
+  handleAddCardModalClose() {
+    document.querySelector('.modal.add-card-modal')
+        .classList.add('hidden');
+    document.querySelectorAll('.add-card-modal input')
+        .forEach((input) => {
+          input.value = null;
+        });
+  }
+
   handleDeleteCard(e) {
     e.preventDefault();
 
@@ -131,23 +150,6 @@ class App extends React.Component {
     
     this.updateStateAndLocalStorage(state);
     this.handleDeleteCardModalClose();
-  }
-
-  handleAddCardModalOpen(e) {
-    const state = Object.assign(this.state, {});
-    state.addCardState.columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
-    this.setState(state);
-    document.querySelector('.modal.add-card-modal')
-        .classList.remove('hidden');
-  }
-
-  handleAddCardModalClose() {
-    document.querySelector('.modal.add-card-modal')
-        .classList.add('hidden');
-    document.querySelectorAll('.add-card-modal input')
-        .forEach((input) => {
-          input.value = null;
-        });
   }
 
   handleDeleteCardModalOpen(e) {
@@ -170,17 +172,58 @@ class App extends React.Component {
         .classList.add('hidden');
   }
 
+  handleAddColumn(e) {
+    e.preventDefault();
+
+    const state = Object.assign(this.state, {});
+    const title = e.currentTarget.parentElement.querySelector('#title').value;
+    if (!title) return;
+
+    // Set id for new column
+    const highestExistingId = reduce(state.columns, (num, column) => column.id >= num ? column.id : num, 0);
+    const columnId = highestExistingId + 1;
+
+    // Add new card to state
+    state.columns.push({
+      id: columnId,
+      title: title,
+      headerColor: '#8E6E95',
+      cards: []
+    });
+
+    this.updateStateAndLocalStorage(state);
+    this.handleAddColumnModalClose();
+  }
+
+  handleAddColumnModalOpen() {
+    document.querySelector('.modal.add-column-modal')
+        .classList.remove('hidden');
+  }
+
+  handleAddColumnModalClose() {
+    document.querySelector('.modal.add-column-modal')
+        .classList.add('hidden');
+    document.querySelectorAll('.add-column-modal input')
+        .forEach((input) => {
+          input.value = null;
+        });
+  }
+
   render() {
     return (
       <div className="app">
-      <AddCardModal 
-        handleAddCardModalClose={this.handleAddCardModalClose}
-        handleAddCard={this.handleAddCard}
-      />
-      <DeleteCardModal 
-        handleDeleteCardModalClose={this.handleDeleteCardModalClose}
-        handleDeleteCard={this.handleDeleteCard}
-      />
+        <AddCardModal 
+          handleAddCardModalClose={this.handleAddCardModalClose}
+          handleAddCard={this.handleAddCard}
+        />
+        <DeleteCardModal 
+          handleDeleteCardModalClose={this.handleDeleteCardModalClose}
+          handleDeleteCard={this.handleDeleteCard}
+        />
+        <AddColumnModal 
+          handleAddColumnModalClose={this.handleAddColumnModalClose}
+          handleAddColumn={this.handleAddColumn}
+        />
         {
           map(this.state.columns, (column, i) => {
             return <Column 
@@ -191,6 +234,9 @@ class App extends React.Component {
             />
           })
         }
+        <div className="column add-column" onClick={this.handleAddColumnModalOpen}>
+          + Add Column
+        </div>
       </div>
     );
   }

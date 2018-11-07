@@ -11,6 +11,14 @@
   margin: 25px;
 }
 
+.column.add-column {
+  justify-content: center;
+  width: 100%;
+  border: 1px dashed gray;
+  align-items: center;
+  cursor: pointer;
+}
+
 .column__header {
   border: 1px solid gray;
   text-align: center;

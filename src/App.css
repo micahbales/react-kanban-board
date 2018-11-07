@@ -29,8 +29,10 @@
   flex-basis: 100%;
 }
 
-.column__add-card-button {
+.column__add-card-button, .column__delete-column-button {
   cursor: pointer;
+  text-align: right;
+  width: 100%;
 }
 
 .card {

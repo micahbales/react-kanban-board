@@ -31,6 +31,9 @@ class Column extends React.Component {
               <div className="column__add-card-button" onClick={this.props.handleAddCardModalOpen}>
                 + add card
               </div>
+              <div className="column__delete-column-button" onClick={this.props.handleDeleteColumnModalOpen}>
+                - delete column
+              </div>
             </div>
           );
     }

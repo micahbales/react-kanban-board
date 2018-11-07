@@ -1,6 +1,6 @@
 import React from 'react';
 import {map, sortBy} from 'lodash';
-import Card from './Card';
+import Card, {CardPosition} from './Card';
 
 function ColumnHeader(props) {
     const headerStyle = {backgroundColor: props.headerColor}
@@ -12,6 +12,21 @@ function ColumnHeader(props) {
 }
 
 class Column extends React.Component {
+
+    getCardPosition(numberOfCardsInColumn, i) {
+        const isFirstCard = i === 0;
+        const isLastCard = i > 0 && i === numberOfCardsInColumn - 1; 
+        if (isLastCard) {
+            return CardPosition.LAST;
+        } else if (isFirstCard && numberOfCardsInColumn === 1) {
+            return CardPosition.ONLY_CARD;
+        } else if (isFirstCard && numberOfCardsInColumn > 1) {
+            return CardPosition.FIRST;
+        } else {
+            return CardPosition.MIDDLE;
+        }
+    }
+
     render () {
         return (
             <div className="column" data-column-id={this.props.column.id}>
@@ -19,11 +34,14 @@ class Column extends React.Component {
               <div className="column__cards">
                 {
                   map(sortBy(this.props.column.cards, 'order'), (card, i) => {
+                    const cardPosition = this.getCardPosition(this.props.column.cards.length, i);
+
                     return <Card
                             card={card}
                             key={i}
                             handleDeleteCardModalOpen={this.props.handleDeleteCardModalOpen}
                             handleAddCardModelClose={this.props.handleAddCardModelClose}
+                            cardPosition={cardPosition}
                         />
                   })
                 }

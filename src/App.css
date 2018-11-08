@@ -45,16 +45,12 @@
   text-align: center;
 }
 
-.card__text, .card__delete-button {
+.card__text {
   padding: 0px 5px;
 }
 
 .card__buttons {
   display: flex;
-}
-
-.card__delete-button {
-  text-align: right;
 }
 
 .card__up-button, .card__down-button, .card__delete-button {

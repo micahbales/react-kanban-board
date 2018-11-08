@@ -4,9 +4,13 @@ import Card, {CardPosition} from './Card';
 
 function ColumnHeader(props) {
     const headerStyle = {backgroundColor: props.headerColor}
+    const hideLeftButton = false;
+    const hideRightButton = false;
     return (
         <div className="column__header" style={headerStyle}>
+            <i className={`fas fa-chevron-left card__up-button ${hideLeftButton}`} onClick={props.handleMoveColumnLeft}></i>
             <span className="column__title text--white">{props.title}</span>
+            <i className={`fas fa-chevron-right card__down-button ${hideRightButton}`} onClick={props.handleMoveColumnRight}></i>
         </div>
     );
 }
@@ -29,8 +33,14 @@ class Column extends React.Component {
 
     render () {
         return (
-            <div className="column" data-column-id={this.props.column.id}>
-              <ColumnHeader className="column__header" title={this.props.column.title} headerColor={this.props.column.headerColor} />
+            <div className="column" data-column-id={this.props.column.id} 
+                data-column-order={this.props.column.order}>
+              <ColumnHeader 
+                title={this.props.column.title} 
+                headerColor={this.props.column.headerColor}
+                handleMoveColumnLeft={this.props.handleMoveColumnLeft}
+                handleMoveColumnRight={this.props.handleMoveColumnRight}
+              />
               <div className="column__cards">
                 {
                   map(sortBy(this.props.column.cards, 'order'), (card, i) => {

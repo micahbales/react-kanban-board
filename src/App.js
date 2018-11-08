@@ -7,6 +7,12 @@ import AddColumnModal from './modals/AddColumnModal';
 import DeleteColumnModal from './modals/DeleteColumnModal';
 import {map, filter, find, reduce, sortBy} from 'lodash';
 
+const ColumnMoveDirection = {
+    DEFAULT: 0,
+    LEFT: 1,
+    RIGHT: 2
+}
+
 const CardMoveDirection = {
     DEFAULT: 0,
     UP: 1,
@@ -104,6 +110,9 @@ class App extends React.Component {
     this.handleAddColumn = this.handleAddColumn.bind(this);
     this.handleDeleteColumnModalOpen = this.handleDeleteColumnModalOpen.bind(this);
     this.handleDeleteColumn = this.handleDeleteColumn.bind(this);
+    this.handleMoveColumnLeft = this.handleMoveColumnLeft.bind(this);
+    this.handleMoveColumnRight = this.handleMoveColumnRight.bind(this);
+    this.getColumnState = this.getColumnState.bind(this);
     this.handleMoveCardUp = this.handleMoveCardUp.bind(this);
     this.handleMoveCardDown = this.handleMoveCardDown.bind(this);
     this.getCardState = this.getCardState.bind(this);
@@ -259,6 +268,40 @@ class App extends React.Component {
         .classList.add('hidden');
   }
 
+  getColumnState(e, direction) {
+    const columnElement = e.currentTarget.parentElement.parentElement;
+    const columnOrder = Number(columnElement.getAttribute('data-column-order'));
+    const swapcolumnOrder = direction === ColumnMoveDirection.RIGHT ? columnOrder + 1 : columnOrder - 1;
+    const state = Object.assign({}, this.state);
+    
+    const column = state.columns.find((column) => column.order === columnOrder);
+    const swapColumn = state.columns.find((column) => column.order === swapcolumnOrder);
+
+    return [column, swapColumn, state];
+  }
+
+  handleMoveColumnLeft(e) {
+    const [column, previousColumn, state] = this.getColumnState(e, ColumnMoveDirection.LEFT);
+    console.log(column, previousColumn);
+    // Swap order of this column and previous column
+    let swap = column.order;
+    column.order = previousColumn.order;
+    previousColumn.order = swap;
+    // Save to state
+    this.updateStateAndLocalStorage(state);
+  }
+
+  handleMoveColumnRight(e) {
+    const [column, nextColumn, state] = this.getColumnState(e, ColumnMoveDirection.RIGHT);
+    console.log(column, nextColumn);
+    // Swap order of this column and next column
+    let swap = column.order;
+    column.order = nextColumn.order;
+    nextColumn.order = swap;
+    // Save to state
+    this.updateStateAndLocalStorage(state);
+  }
+
   getCardState(e, direction) {
     const cardElement = e.currentTarget.parentElement.parentElement.parentElement;
     const cardOrder = Number(cardElement.getAttribute('data-card-order'));
@@ -280,7 +323,7 @@ class App extends React.Component {
     card.order = previousCard.order;
     previousCard.order = swap;
     // Save to state
-    this.setState(state);
+    this.updateStateAndLocalStorage(state);
   }
 
   handleMoveCardDown(e) {
@@ -290,7 +333,7 @@ class App extends React.Component {
     card.order = nextCard.order;
     nextCard.order = swap;
     // Save to state
-    this.setState(state);
+    this.updateStateAndLocalStorage(state);
   }
 
   render() {
@@ -320,6 +363,8 @@ class App extends React.Component {
               handleAddCardModalOpen={this.handleAddCardModalOpen}
               handleDeleteCardModalOpen={this.handleDeleteCardModalOpen}
               handleDeleteColumnModalOpen={this.handleDeleteColumnModalOpen}
+              handleMoveColumnLeft={this.handleMoveColumnLeft}
+              handleMoveColumnRight={this.handleMoveColumnRight}
               handleMoveCardUp={this.handleMoveCardUp}
               handleMoveCardDown={this.handleMoveCardDown}
             />

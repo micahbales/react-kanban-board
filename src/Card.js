@@ -30,7 +30,7 @@ class Card extends React.Component {
             <div className="card" data-card-order={this.props.card.order}>
                 <div className="card__text">{this.props.card.text}</div>
                 <div className="card__buttons">
-                    <button className="card__delete-button" onClick={this.props.handleDeleteCardModalOpen}>DELETE</button>
+                    <i className="fas fa-trash card__delete-button" onClick={this.props.handleDeleteCardModalOpen}></i>
                     <NavButtons 
                         cardPosition={this.props.cardPosition}
                         handleMoveCardUp={this.props.handleMoveCardUp}

@@ -282,7 +282,6 @@ class App extends React.Component {
 
   handleMoveColumnLeft(e) {
     const [column, previousColumn, state] = this.getColumnState(e, ColumnMoveDirection.LEFT);
-    console.log(column, previousColumn);
     // Swap order of this column and previous column
     let swap = column.order;
     column.order = previousColumn.order;
@@ -359,6 +358,7 @@ class App extends React.Component {
           map(sortBy(this.state.columns, 'order'), (column, i) => {
             return <Column 
               column={column}
+              columns={this.state.columns}
               key={i} 
               handleAddCardModalOpen={this.handleAddCardModalOpen}
               handleDeleteCardModalOpen={this.handleDeleteCardModalOpen}

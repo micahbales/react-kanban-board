@@ -18,8 +18,8 @@ function NavButtons(props) {
     
     return (
         <div className={`card__nav-buttons ${hideButtons}`}>
-            <i className={`fas fa-chevron-up ${hideUpButton}`}></i>
-            <i className={`fas fa-chevron-down ${hideDownButton}`}></i>
+            <i className={`fas fa-chevron-up card__up-button ${hideUpButton}`} onClick={props.handleMoveCardUp}></i>
+            <i className={`fas fa-chevron-down card__down-button ${hideDownButton}`} onClick={props.handleMoveCardDown}></i>
         </div>
     );
 }
@@ -29,8 +29,14 @@ class Card extends React.Component {
         return (
             <div className="card" data-card-order={this.props.card.order}>
                 <div className="card__text">{this.props.card.text}</div>
-                <button className="card__delete-button" onClick={this.props.handleDeleteCardModalOpen}>DELETE</button>
-                <NavButtons cardPosition={this.props.cardPosition} />
+                <div className="card__buttons">
+                    <button className="card__delete-button" onClick={this.props.handleDeleteCardModalOpen}>DELETE</button>
+                    <NavButtons 
+                        cardPosition={this.props.cardPosition}
+                        handleMoveCardUp={this.props.handleMoveCardUp}
+                        handleMoveCardDown={this.props.handleMoveCardDown}
+                    />
+                </div>
             </div>
         );
     }

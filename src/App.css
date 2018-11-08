@@ -49,8 +49,17 @@
   padding: 0px 5px;
 }
 
+.card__buttons {
+  display: flex;
+}
+
 .card__delete-button {
   text-align: right;
+}
+
+.card__up-button, .card__down-button, .card__delete-button {
+  cursor: pointer;
+  margin: 0px 2px;
 }
 
 .text--white {color: #f0f0f0;}

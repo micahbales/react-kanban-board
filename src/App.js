@@ -7,6 +7,12 @@ import AddColumnModal from './modals/AddColumnModal';
 import DeleteColumnModal from './modals/DeleteColumnModal';
 import {map, filter, find, reduce, sortBy} from 'lodash';
 
+const CardMoveDirection = {
+    DEFAULT: 0,
+    UP: 1,
+    DOWN: 2
+}
+
 class App extends React.Component {
 
   defaultCards = [
@@ -98,6 +104,9 @@ class App extends React.Component {
     this.handleAddColumn = this.handleAddColumn.bind(this);
     this.handleDeleteColumnModalOpen = this.handleDeleteColumnModalOpen.bind(this);
     this.handleDeleteColumn = this.handleDeleteColumn.bind(this);
+    this.handleMoveCardUp = this.handleMoveCardUp.bind(this);
+    this.handleMoveCardDown = this.handleMoveCardDown.bind(this);
+    this.getCardState = this.getCardState.bind(this);
   }
 
   updateStateAndLocalStorage(state) {
@@ -250,6 +259,40 @@ class App extends React.Component {
         .classList.add('hidden');
   }
 
+  getCardState(e, direction) {
+    const cardElement = e.currentTarget.parentElement.parentElement.parentElement;
+    const cardOrder = Number(cardElement.getAttribute('data-card-order'));
+    const swapCardOrder = direction === CardMoveDirection.DOWN ? cardOrder + 1 : cardOrder - 1;
+    const columnId = Number(cardElement.parentElement.parentElement.getAttribute('data-column-id'));
+    const state = Object.assign({}, this.state);
+    const column = state.columns.find((column) => column.id === columnId);
+
+    // Get card data
+    const card = column.cards.find((card) => card.order === cardOrder);
+    const swapCard = column.cards.find((card) => card.order === swapCardOrder);
+    return [card, swapCard, state];
+  }
+
+  handleMoveCardUp(e) {
+    const [card, previousCard, state] = this.getCardState(e, CardMoveDirection.UP);
+    // Swap order of this card and above card
+    let swap = card.order;
+    card.order = previousCard.order;
+    previousCard.order = swap;
+    // Save to state
+    this.setState(state);
+  }
+
+  handleMoveCardDown(e) {
+    const [card, nextCard, state] = this.getCardState(e, CardMoveDirection.DOWN);
+    // Swap order of this card and above card
+    let swap = card.order;
+    card.order = nextCard.order;
+    nextCard.order = swap;
+    // Save to state
+    this.setState(state);
+  }
+
   render() {
     return (
       <div className="app">
@@ -277,6 +320,8 @@ class App extends React.Component {
               handleAddCardModalOpen={this.handleAddCardModalOpen}
               handleDeleteCardModalOpen={this.handleDeleteCardModalOpen}
               handleDeleteColumnModalOpen={this.handleDeleteColumnModalOpen}
+              handleMoveCardUp={this.handleMoveCardUp}
+              handleMoveCardDown={this.handleMoveCardDown}
             />
           })
         }

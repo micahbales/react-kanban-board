@@ -42,6 +42,8 @@ class Column extends React.Component {
                             handleDeleteCardModalOpen={this.props.handleDeleteCardModalOpen}
                             handleAddCardModelClose={this.props.handleAddCardModelClose}
                             cardPosition={cardPosition}
+                            handleMoveCardUp={this.props.handleMoveCardUp}
+                            handleMoveCardDown={this.props.handleMoveCardDown}
                         />
                   })
                 }

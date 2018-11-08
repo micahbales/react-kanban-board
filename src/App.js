@@ -280,27 +280,6 @@ class App extends React.Component {
     return [column, swapColumn, state];
   }
 
-  handleMoveColumnLeft(e) {
-    const [column, previousColumn, state] = this.getColumnState(e, ColumnMoveDirection.LEFT);
-    // Swap order of this column and previous column
-    let swap = column.order;
-    column.order = previousColumn.order;
-    previousColumn.order = swap;
-    // Save to state
-    this.updateStateAndLocalStorage(state);
-  }
-
-  handleMoveColumnRight(e) {
-    const [column, nextColumn, state] = this.getColumnState(e, ColumnMoveDirection.RIGHT);
-    console.log(column, nextColumn);
-    // Swap order of this column and next column
-    let swap = column.order;
-    column.order = nextColumn.order;
-    nextColumn.order = swap;
-    // Save to state
-    this.updateStateAndLocalStorage(state);
-  }
-
   getCardState(e, direction) {
     const cardElement = e.currentTarget.parentElement.parentElement.parentElement;
     const cardOrder = Number(cardElement.getAttribute('data-card-order'));
@@ -309,15 +288,15 @@ class App extends React.Component {
     const state = Object.assign({}, this.state);
     const column = state.columns.find((column) => column.id === columnId);
 
-    // Get card data
     const card = column.cards.find((card) => card.order === cardOrder);
     const swapCard = column.cards.find((card) => card.order === swapCardOrder);
+
     return [card, swapCard, state];
   }
 
-  handleMoveCardUp(e) {
-    const [card, previousCard, state] = this.getCardState(e, CardMoveDirection.UP);
-    // Swap order of this card and above card
+  handleMovement(e, direction, getItemState) {
+    const [card, previousCard, state] = getItemState(e, direction);
+    // Swap order of two cards
     let swap = card.order;
     card.order = previousCard.order;
     previousCard.order = swap;
@@ -325,14 +304,20 @@ class App extends React.Component {
     this.updateStateAndLocalStorage(state);
   }
 
+  handleMoveColumnLeft(e) {
+    this.handleMovement(e, ColumnMoveDirection.LEFT, this.getColumnState);
+  }
+
+  handleMoveColumnRight(e) {
+    this.handleMovement(e, ColumnMoveDirection.RIGHT, this.getColumnState);
+  }
+
+  handleMoveCardUp(e) {
+    this.handleMovement(e, CardMoveDirection.UP, this.getCardState);
+  }
+
   handleMoveCardDown(e) {
-    const [card, nextCard, state] = this.getCardState(e, CardMoveDirection.DOWN);
-    // Swap order of this card and above card
-    let swap = card.order;
-    card.order = nextCard.order;
-    nextCard.order = swap;
-    // Save to state
-    this.updateStateAndLocalStorage(state);
+    this.handleMovement(e, CardMoveDirection.DOWN, this.getCardState);
   }
 
   render() {

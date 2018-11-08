@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const CardPosition = {
+const CardPosition = {
     DEFAULT: 0,
     ONLY_CARD: 1,
     FIRST: 2,
@@ -25,14 +25,29 @@ function NavButtons(props) {
 }
 
 class Card extends React.Component {
+    getCardPosition(numberOfCardsInColumn, cardOrder) {
+        const isFirstCard = cardOrder === 0;
+        const isLastCard = cardOrder > 0 && cardOrder === numberOfCardsInColumn - 1; 
+        if (isLastCard) {
+            return CardPosition.LAST;
+        } else if (isFirstCard && numberOfCardsInColumn === 1) {
+            return CardPosition.ONLY_CARD;
+        } else if (isFirstCard && numberOfCardsInColumn > 1) {
+            return CardPosition.FIRST;
+        } else {
+            return CardPosition.MIDDLE;
+        }
+    }
+
     render() {
+        const cardPosition = this.getCardPosition(this.props.numberOfCardsInColumn, this.props.card.order);
         return (
             <div className="card" data-card-order={this.props.card.order}>
                 <div className="card__text">{this.props.card.text}</div>
                 <div className="card__buttons">
                     <i className="fas fa-trash card__delete-button" onClick={this.props.handleDeleteCardModalOpen}></i>
                     <NavButtons 
-                        cardPosition={this.props.cardPosition}
+                        cardPosition={cardPosition}
                         handleMoveCardUp={this.props.handleMoveCardUp}
                         handleMoveCardDown={this.props.handleMoveCardDown}
                     />

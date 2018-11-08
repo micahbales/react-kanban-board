@@ -1,14 +1,7 @@
 import React from 'react';
 import {map, sortBy} from 'lodash';
 import Card from './Card';
-
-export const Position = {
-    DEFAULT: 0,
-    ONLY: 1,
-    FIRST: 2,
-    MIDDLE: 3,
-    LAST: 4
-}
+import {getPosition, Position} from './Utils';
 
 function ColumnHeader(props) {
     const headerStyle = {backgroundColor: props.headerColor}
@@ -30,22 +23,8 @@ function ColumnHeader(props) {
 }
 
 class Column extends React.Component {
-    getColumnPosition(numberOfColumns, ColumnOrder) {
-        const isFirstColumn = ColumnOrder === 0;
-        const isLastColumn = ColumnOrder > 0 && ColumnOrder === numberOfColumns - 1; 
-        if (isLastColumn) {
-            return Position.LAST;
-        } else if (isFirstColumn && numberOfColumns === 1) {
-            return Position.ONLY_Column;
-        } else if (isFirstColumn && numberOfColumns > 1) {
-            return Position.FIRST;
-        } else {
-            return Position.MIDDLE;
-        }
-    }
-
     render () {
-        const columnPosition = this.getColumnPosition(this.props.columns.length, this.props.column.order)
+        const columnPosition = getPosition(this.props.columns.length, this.props.column.order)
         return (
             <div className="column" data-column-id={this.props.column.id} 
                 data-column-order={this.props.column.order}>

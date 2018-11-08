@@ -1,5 +1,5 @@
 import React from 'react';
-import {Position} from './Column';
+import {getPosition, Position} from './Utils';
 
 function NavButtons(props) {
     const position = props.position;
@@ -17,22 +17,8 @@ function NavButtons(props) {
 }
 
 class Card extends React.Component {
-    getCardPosition(numberOfCardsInColumn, cardOrder) {
-        const isFirstCard = cardOrder === 0;
-        const isLastCard = cardOrder > 0 && cardOrder === numberOfCardsInColumn - 1; 
-        if (isLastCard) {
-            return Position.LAST;
-        } else if (isFirstCard && numberOfCardsInColumn === 1) {
-            return Position.ONLY_CARD;
-        } else if (isFirstCard && numberOfCardsInColumn > 1) {
-            return Position.FIRST;
-        } else {
-            return Position.MIDDLE;
-        }
-    }
-
     render() {
-        const cardPosition = this.getCardPosition(this.props.numberOfCardsInColumn, this.props.card.order);
+        const cardPosition = getPosition(this.props.numberOfCardsInColumn, this.props.card.order);
         return (
             <div className="card" data-card-order={this.props.card.order}>
                 <div className="card__text">{this.props.card.text}</div>

@@ -1,27 +1,41 @@
-.app {
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Lato');
+
+h1, h2, h3, h4, h5, h6, .column__title {
+  display: inline;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.columns {
   display: flex;
   flex-wrap: wrap;
+  font-family: 'Lato', sans-serif;
 }
 
 .column {
-  display: flex;
   flex-wrap: wrap;
-  flex-basis: 25%;
+  flex-basis: 100%;
   justify-content: flex-end;
   margin: 25px;
+  min-width: 300px;
 }
 
 .column.add-column {
+  display: flex;
+  font-family: 'Montserrat', sans-serif;
   justify-content: center;
   width: 100%;
   border: 1px dashed gray;
   align-items: center;
   cursor: pointer;
+  max-height: 75px;
+  min-width: 300px;
 }
 
 .column__header {
   border: 1px solid gray;
+  padding-top: 7px;
   text-align: center;
+  height: 30px;
   width: 100%;
 }
 
@@ -35,11 +49,28 @@
   width: 100%;
 }
 
+.column__right-button, .column__left-button {
+  margin-top: 5px;
+}
+
+.column__right-button {
+  float: right;
+  margin-right: 5%;
+}
+
+.column__left-button {
+  float: left;
+  margin-left: 5%;
+}
+
+.column__add-card-button, .column__delete-column-button {
+  font-family: Montserrat, sans-serif;
+}
+
 .card {
   border: 1px solid gray;
   display: flex;
   justify-content: space-between;
-  min-width: 300px;
   padding: 5px;
   margin: 2px 0px;
   text-align: center;
@@ -61,6 +92,8 @@
 .text--white {color: #f0f0f0;}
 
 .hidden {display: none}
+
+.invisible {visibility: hidden}
 
 .modal {
   position: fixed;
@@ -102,4 +135,10 @@
   float: right;
   font-size: 28px;
   font-weight: bold;
+}
+
+@media (min-width: 700px) {
+  .column {
+    flex-basis: 25%;
+  }
 }

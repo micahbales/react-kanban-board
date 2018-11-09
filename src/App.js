@@ -51,27 +51,27 @@ class App extends React.Component {
         cards: this.defaultCards,
         title: 'First Column'
       },
-      {
-        id: 2,
-        order: 1,
-        headerColor: '#39A59C',
-        cards: this.defaultCards,
-        title: 'Second Column'
-      },
-      {
-        id: 1,
-        order: 2,
-        headerColor: '#344759',
-        cards: this.defaultCards,
-        title: 'Third Column'
-      },
-      {
-        id: 0,
-        order: 3,
-        headerColor: '#E8741E',
-        cards: this.defaultCards,
-        title: 'Fourth Column'
-      },
+      // {
+      //   id: 2,
+      //   order: 1,
+      //   headerColor: '#39A59C',
+      //   cards: this.defaultCards,
+      //   title: 'Second Column'
+      // },
+      // {
+      //   id: 1,
+      //   order: 2,
+      //   headerColor: '#344759',
+      //   cards: this.defaultCards,
+      //   title: 'Third Column'
+      // },
+      // {
+      //   id: 0,
+      //   order: 3,
+      //   headerColor: '#E8741E',
+      //   cards: this.defaultCards,
+      //   title: 'Fourth Column'
+      // },
     ],
     addCardState: {
       columnId: null
@@ -182,9 +182,10 @@ class App extends React.Component {
 
   handleDeleteCardModalOpen(e) {
     const columnId = Number(e.currentTarget
-      .parentElement.parentElement.parentElement
-      .getAttribute('data-column-id'));
-    const cardOrder = Number(e.currentTarget.parentElement.getAttribute('data-card-order'));
+        .parentElement.parentElement.parentElement.parentElement
+        .getAttribute('data-column-id'));
+    const cardOrder = Number(e.currentTarget
+        .parentElement.parentElement.getAttribute('data-card-order'));
     const state = Object.assign({}, this.state);
     
     state.deleteCardState.columnId = columnId;
@@ -339,24 +340,26 @@ class App extends React.Component {
           handleDeleteColumnModalClose={this.handleDeleteColumnModalClose}
           handleDeleteColumn={this.handleDeleteColumn}
         />
-        {
-          map(sortBy(this.state.columns, 'order'), (column, i) => {
-            return <Column 
-              column={column}
-              columns={this.state.columns}
-              key={i} 
-              handleAddCardModalOpen={this.handleAddCardModalOpen}
-              handleDeleteCardModalOpen={this.handleDeleteCardModalOpen}
-              handleDeleteColumnModalOpen={this.handleDeleteColumnModalOpen}
-              handleMoveColumnLeft={this.handleMoveColumnLeft}
-              handleMoveColumnRight={this.handleMoveColumnRight}
-              handleMoveCardUp={this.handleMoveCardUp}
-              handleMoveCardDown={this.handleMoveCardDown}
-            />
-          })
-        }
-        <div className="column add-column" onClick={this.handleAddColumnModalOpen}>
-          + Add Column
+        <div className='columns'>
+          {
+            map(sortBy(this.state.columns, 'order'), (column, i) => {
+              return <Column 
+                column={column}
+                columns={this.state.columns}
+                key={i} 
+                handleAddCardModalOpen={this.handleAddCardModalOpen}
+                handleDeleteCardModalOpen={this.handleDeleteCardModalOpen}
+                handleDeleteColumnModalOpen={this.handleDeleteColumnModalOpen}
+                handleMoveColumnLeft={this.handleMoveColumnLeft}
+                handleMoveColumnRight={this.handleMoveColumnRight}
+                handleMoveCardUp={this.handleMoveCardUp}
+                handleMoveCardDown={this.handleMoveCardDown}
+              />
+            })
+          }
+          <div className="column add-column" onClick={this.handleAddColumnModalOpen}>
+            + Add Column
+          </div>
         </div>
       </div>
     );

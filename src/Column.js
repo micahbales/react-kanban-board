@@ -6,17 +6,17 @@ import {getPosition, Position} from './Utils';
 function ColumnHeader(props) {
     const headerStyle = {backgroundColor: props.headerColor}
     const position = props.position;
-    const hideButtons = position === Position.ONLY ? 'hidden' : '';
+    const hideButtons = position === Position.ONLY ? 'invisible' : '';
     const hideLeftButton = !(position === Position.MIDDLE) && 
-            !(position === Position.LAST) ? 'hidden' : '';
+            !(position === Position.LAST) ? 'invisible' : '';
     const hideRightButton = !(position === Position.MIDDLE) && 
-            !(position === Position.FIRST) ? 'hidden' : '';
+            !(position === Position.FIRST) ? 'invisible' : '';
     return (
         <div className="column__header" style={headerStyle}>
-            <i className={`fas fa-chevron-left card__up-button 
+            <i className={`fas fa-chevron-left column__left-button 
                 ${hideButtons} ${hideLeftButton}`} onClick={props.handleMoveColumnLeft}></i>
-            <span className="column__title text--white">{props.title}</span>
-            <i className={`fas fa-chevron-right card__down-button 
+            <h3 className="column__title text--white">{props.title}</h3>
+            <i className={`fas fa-chevron-right column__right-button 
                 ${hideButtons} ${hideRightButton}`} onClick={props.handleMoveColumnRight}></i>
         </div>
     );
@@ -51,10 +51,10 @@ class Column extends React.Component {
                 }
               </div>
               <div className="column__add-card-button" onClick={this.props.handleAddCardModalOpen}>
-                + add card
+                + Add Card
               </div>
               <div className="column__delete-column-button" onClick={this.props.handleDeleteColumnModalOpen}>
-                - delete column
+                - Delete Column
               </div>
             </div>
           );

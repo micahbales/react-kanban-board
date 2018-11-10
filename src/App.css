@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Lato');
 
-h1, h2, h3, h4, h5, h6, .column__title {
-  display: inline;
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
+}
+
+.column__title {
+  display: inline;
 }
 
 .columns {
@@ -43,14 +46,21 @@ h1, h2, h3, h4, h5, h6, .column__title {
   flex-basis: 100%;
 }
 
-.column__add-card-button, .column__delete-column-button {
+.column__add-card-button, .column__update-column-button {
   cursor: pointer;
   text-align: right;
-  width: 100%;
+  display: inline-block;
+  margin: 0px 5px;
 }
 
-.column__right-button, .column__left-button {
+.column__buttons {
+  display: flex;
+  flex-flow: row-reverse;
   margin-top: 5px;
+}
+
+.column__buttons span {
+  margin: 3px;
 }
 
 .column__right-button {
@@ -63,7 +73,7 @@ h1, h2, h3, h4, h5, h6, .column__title {
   margin-left: 5%;
 }
 
-.column__add-card-button, .column__delete-column-button {
+.column__add-card-button, .column__update-column-button {
   font-family: Montserrat, sans-serif;
 }
 
@@ -121,12 +131,21 @@ h1, h2, h3, h4, h5, h6, .column__title {
   height: 150px;
 }
 
-.modal .modal-content .input-row input {
+.modal .modal-content .form-row {
+  margin: 20px 0px;
+}
+
+.modal .modal-content input {
     font-size: 16px;
     height: 25px;
     margin: 7px 0px;
     text-align: center;
     width: 50%;
+}
+
+.update-column-modal__delete-button, .update-column-modal__update-button {
+  display: block;
+  margin: 5px auto;
 }
 
 .modal .close {

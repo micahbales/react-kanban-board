@@ -4,7 +4,7 @@ import Column from './Column';
 import AddCardModal from './modals/AddCardModal';
 import DeleteCardModal from './modals/DeleteCardModal';
 import AddColumnModal from './modals/AddColumnModal';
-import DeleteColumnModal from './modals/DeleteColumnModal';
+import UpdateColumnModal from './modals/UpdateColumnModal';
 import {map, filter, find, reduce, sortBy} from 'lodash';
 
 const ColumnMoveDirection = {
@@ -87,8 +87,9 @@ class App extends React.Component {
       columnId: null,
       cardOrder: null
     },
-    deleteColumnState: {
-      columnId: null
+    updateColumnState: {
+      columnId: null,
+      title: ''
     }
   };
 
@@ -108,7 +109,8 @@ class App extends React.Component {
     this.handleDeleteCard = this.handleDeleteCard.bind(this);
     this.handleDeleteCardModalOpen = this.handleDeleteCardModalOpen.bind(this);
     this.handleAddColumn = this.handleAddColumn.bind(this);
-    this.handleDeleteColumnModalOpen = this.handleDeleteColumnModalOpen.bind(this);
+    this.handleUpdateColumn = this.handleUpdateColumn.bind(this);
+    this.handleUpdateColumnModalOpen = this.handleUpdateColumnModalOpen.bind(this);
     this.handleDeleteColumn = this.handleDeleteColumn.bind(this);
     this.handleMoveColumnLeft = this.handleMoveColumnLeft.bind(this);
     this.handleMoveColumnRight = this.handleMoveColumnRight.bind(this);
@@ -147,7 +149,8 @@ class App extends React.Component {
 
   handleAddCardModalOpen(e) {
     const state = Object.assign(this.state, {});
-    state.addCardState.columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
+    state.addCardState.columnId = Number(e.currentTarget
+          .parentElement.parentElement.parentElement.getAttribute('data-column-id'));
     this.setState(state);
     document.querySelector('.modal.add-card-modal')
         .classList.remove('hidden');
@@ -227,6 +230,21 @@ class App extends React.Component {
     this.handleAddColumnModalClose();
   }
 
+  handleUpdateColumn(e) {
+    e.preventDefault();
+
+    const state = Object.assign(this.state, {});
+    const title = e.currentTarget.parentElement.querySelector('#title').value;
+    if (!title) return;
+
+    const column = state.columns.find((column) => column.id === state.updateColumnState.columnId);
+
+    column.title = title;
+
+    this.updateStateAndLocalStorage(state);
+    this.handleUpdateColumnModalClose();
+  }
+
   handleAddColumnModalOpen() {
     document.querySelector('.modal.add-column-modal')
         .classList.remove('hidden');
@@ -245,27 +263,31 @@ class App extends React.Component {
     e.preventDefault();
 
     const state = Object.assign({}, this.state);
-    const columnId = this.state.deleteColumnState.columnId;
+    const columnId = this.state.updateColumnState.columnId;
 
     state.columns = filter(state.columns, (column) => column.id !== columnId);
     
     this.updateStateAndLocalStorage(state);
-    this.handleDeleteColumnModalClose();
+    this.handleUpdateColumnModalClose();
   }
 
-  handleDeleteColumnModalOpen(e) {
-    const columnId = Number(e.currentTarget.parentElement.getAttribute('data-column-id'));
+  handleUpdateColumnModalOpen(e) {
+    const columnId = Number(e.currentTarget
+          .parentElement.parentElement.parentElement.getAttribute('data-column-id'));
+    const title = e.currentTarget.parentElement.parentElement.parentElement
+        .querySelector('.column__header .column__title').innerText;
     const state = Object.assign({}, this.state);
     
-    state.deleteColumnState.columnId = columnId;
+    state.updateColumnState.columnId = columnId;
+    state.updateColumnState.title = title;
     this.updateStateAndLocalStorage(state);
     
-    document.querySelector('.modal.delete-column-modal')
+    document.querySelector('.modal.update-column-modal')
         .classList.remove('hidden');
   }
 
-  handleDeleteColumnModalClose() {
-    document.querySelector('.modal.delete-column-modal')
+  handleUpdateColumnModalClose() {
+    document.querySelector('.modal.update-column-modal')
         .classList.add('hidden');
   }
 
@@ -323,7 +345,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="app">
+      <div className='app'>
         <AddCardModal 
           handleAddCardModalClose={this.handleAddCardModalClose}
           handleAddCard={this.handleAddCard}
@@ -336,8 +358,10 @@ class App extends React.Component {
           handleAddColumnModalClose={this.handleAddColumnModalClose}
           handleAddColumn={this.handleAddColumn}
         />
-        <DeleteColumnModal
-          handleDeleteColumnModalClose={this.handleDeleteColumnModalClose}
+        <UpdateColumnModal
+          title={this.state.updateColumnState.title}
+          handleUpdateColumnModalClose={this.handleUpdateColumnModalClose}
+          handleUpdateColumn={this.handleUpdateColumn}
           handleDeleteColumn={this.handleDeleteColumn}
         />
         <div className='columns'>
@@ -349,7 +373,7 @@ class App extends React.Component {
                 key={i} 
                 handleAddCardModalOpen={this.handleAddCardModalOpen}
                 handleDeleteCardModalOpen={this.handleDeleteCardModalOpen}
-                handleDeleteColumnModalOpen={this.handleDeleteColumnModalOpen}
+                handleUpdateColumnModalOpen={this.handleUpdateColumnModalOpen}
                 handleMoveColumnLeft={this.handleMoveColumnLeft}
                 handleMoveColumnRight={this.handleMoveColumnRight}
                 handleMoveCardUp={this.handleMoveCardUp}
@@ -357,8 +381,8 @@ class App extends React.Component {
               />
             })
           }
-          <div className="column add-column" onClick={this.handleAddColumnModalOpen}>
-            + Add Column
+          <div className='column add-column' onClick={this.handleAddColumnModalOpen}>
+            + Column
           </div>
         </div>
       </div>

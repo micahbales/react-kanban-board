@@ -12,10 +12,10 @@ function ColumnHeader(props) {
     const hideRightButton = !(position === Position.MIDDLE) && 
             !(position === Position.FIRST) ? 'invisible' : '';
     return (
-        <div className="column__header" style={headerStyle}>
+        <div className='column__header' style={headerStyle}>
             <i className={`fas fa-chevron-left column__left-button 
                 ${hideButtons} ${hideLeftButton}`} onClick={props.handleMoveColumnLeft}></i>
-            <h3 className="column__title text--white">{props.title}</h3>
+            <h3 className='column__title text--white'>{props.title}</h3>
             <i className={`fas fa-chevron-right column__right-button 
                 ${hideButtons} ${hideRightButton}`} onClick={props.handleMoveColumnRight}></i>
         </div>
@@ -26,7 +26,7 @@ class Column extends React.Component {
     render () {
         const columnPosition = getPosition(this.props.columns.length, this.props.column.order)
         return (
-            <div className="column" data-column-id={this.props.column.id} 
+            <div className='column' data-column-id={this.props.column.id} 
                 data-column-order={this.props.column.order}>
               <ColumnHeader 
                 title={this.props.column.title} 
@@ -35,7 +35,7 @@ class Column extends React.Component {
                 handleMoveColumnLeft={this.props.handleMoveColumnLeft}
                 handleMoveColumnRight={this.props.handleMoveColumnRight}
               />
-              <div className="column__cards">
+              <div className='column__cards'>
                 {
                   map(sortBy(this.props.column.cards, 'order'), (card, i) => {
                     return <Card
@@ -50,11 +50,15 @@ class Column extends React.Component {
                   })
                 }
               </div>
-              <div className="column__add-card-button" onClick={this.props.handleAddCardModalOpen}>
-                + Add Card
-              </div>
-              <div className="column__delete-column-button" onClick={this.props.handleDeleteColumnModalOpen}>
-                - Delete Column
+              <div className='column__buttons'>
+                <div className='column__add-card-button'>
+                    <i className='fas fa-plus-square' 
+                            onClick={this.props.handleAddCardModalOpen}></i>
+                </div>
+                <div className='column__update-column-button'>
+                    <i className='fas fa-pencil-alt' 
+                            onClick={this.props.handleUpdateColumnModalOpen}></i>
+                </div>
               </div>
             </div>
           );

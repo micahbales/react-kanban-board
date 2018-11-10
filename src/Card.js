@@ -20,10 +20,10 @@ class Card extends React.Component {
     render() {
         const cardPosition = getPosition(this.props.numberOfCardsInColumn, this.props.card.order);
         return (
-            <div className="card" data-card-order={this.props.card.order}>
-                <div className="card__text">{this.props.card.text}</div>
-                <div className="card__buttons">
-                    <i className="fas fa-trash card__delete-button" onClick={this.props.handleDeleteCardModalOpen}></i>
+            <div className='card' data-card-order={this.props.card.order}>
+                <div className='card__text'>{this.props.card.text}</div>
+                <div className='card__buttons'>
+                    <i className='fas fa-trash card__delete-button' onClick={this.props.handleDeleteCardModalOpen}></i>
                     <NavButtons 
                         position={cardPosition}
                         handleMoveCardUp={this.props.handleMoveCardUp}

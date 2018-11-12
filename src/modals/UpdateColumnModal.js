@@ -1,6 +1,17 @@
 import React from 'react';
 
 class UpdateColumnModal extends React.Component {
+
+    constructor(props) {
+        super();
+        this.state = {selectValue: props.headerColor}
+        this.handleSelectChange = this.handleSelectChange.bind(this);
+    }
+
+    handleSelectChange(e) {
+        this.setState({selectValue: e.currentTarget.value});
+    }
+
     render() {
         return (
             <div className='modal update-column-modal hidden'>
@@ -13,10 +24,21 @@ class UpdateColumnModal extends React.Component {
     
                     <form>
                         <div className='form-row'>
-                            <h4>Column Title</h4>
                             <input type='text' autoComplete='off' id='title' 
                                     placeholder='Title' className='modal-input' 
                                     defaultValue={this.props.title} maxLength="25" />
+
+                            <select id='header-color-select' 
+                                    defaultValue={this.props.headerColor} 
+                                    onChange={this.handleSelectChange}>
+                                {
+                                    this.props.colors.map((color, i) => {
+                                        return <option value={color.value} key={i}>
+                                            {color.name}
+                                        </option>
+                                    })
+                                }
+                            </select>
                             
                             <button className='button update-column-modal__update-button' 
                                     onClick={this.props.handleUpdateColumn}>
@@ -24,8 +46,9 @@ class UpdateColumnModal extends React.Component {
                             </button>
                         </div>
 
-                        <div className='form-row'>
-                            <h4>Delete Column</h4> 
+                        <div className='form-row delete-column'>
+                            <h4>DELETE COLUMN</h4>
+                            <p>(Will also delete all cards!)</p>
                             <button className='button update-column-modal__delete-button' 
                                 onClick={this.props.handleDeleteColumn}>
                                 DELETE

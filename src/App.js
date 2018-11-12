@@ -24,20 +24,20 @@ class App extends React.Component {
   defaultCards = [
     {
       order: 0,
-      text: 'one two three'
+      text: 'example card'
     },
     {
       order: 1,
-      text: 'four five six'
+      text: 'to get you started'
     },
-    {
-      order: 2,
-      text: 'seven eight nine'
-    },
-    {
-      order: 3,
-      text: 'ten eleven twelve'
-    },
+    // {
+    //   order: 2,
+    //   text: 'seven eight nine'
+    // },
+    // {
+    //   order: 3,
+    //   text: 'ten eleven twelve'
+    // },
   ];
 
   defaultState = {
@@ -49,7 +49,7 @@ class App extends React.Component {
         order: 0,
         headerColor: '#8E6E95',
         cards: this.defaultCards,
-        title: 'First Column'
+        title: 'Sample Column'
       },
       // {
       //   id: 2,
@@ -72,14 +72,29 @@ class App extends React.Component {
       //   cards: this.defaultCards,
       //   title: 'Fourth Column'
       // },
-    ],
-    addCardState: {
-      columnId: null
-    }
+    ]
   }
 
   state = {
     columns: [],
+    colors: [
+      {
+        name: 'Purple',
+        value: '#8E6E95'
+      },
+      {
+        name: 'Turquoise',
+        value: '#39A59C'
+      },
+      {
+        name: 'Navy',
+        value: '#344759'
+      },
+      {
+        name: 'Orange',
+        value: '#E8741E'
+      }
+    ],
     addCardState: {
       columnId: null
     },
@@ -89,6 +104,7 @@ class App extends React.Component {
     },
     updateColumnState: {
       columnId: null,
+      headerColor: '',
       title: ''
     }
   };
@@ -129,7 +145,7 @@ class App extends React.Component {
     e.preventDefault();
 
     const columnId = this.state.addCardState.columnId;
-    const state = Object.assign(this.state, {});
+    const state = Object.assign({}, this.state);
     const column = find(state.columns, {id: columnId});
     const text = e.currentTarget.parentElement.querySelector('#text').value;
     if (!text) return;
@@ -148,7 +164,7 @@ class App extends React.Component {
   }
 
   handleAddCardModalOpen(e) {
-    const state = Object.assign(this.state, {});
+    const state = Object.assign({}, this.state);
     state.addCardState.columnId = Number(e.currentTarget
           .parentElement.parentElement.parentElement.getAttribute('data-column-id'));
     this.setState(state);
@@ -207,7 +223,7 @@ class App extends React.Component {
   handleAddColumn(e) {
     e.preventDefault();
 
-    const state = Object.assign(this.state, {});
+    const state = Object.assign({}, this.state);
     const title = e.currentTarget.parentElement.querySelector('#title').value;
     if (!title) return;
 
@@ -233,13 +249,16 @@ class App extends React.Component {
   handleUpdateColumn(e) {
     e.preventDefault();
 
-    const state = Object.assign(this.state, {});
+    const state = Object.assign({}, this.state);
     const title = e.currentTarget.parentElement.querySelector('#title').value;
+    const colorValue = e.currentTarget.parentElement.querySelector('#header-color-select').value;
     if (!title) return;
 
     const column = state.columns.find((column) => column.id === state.updateColumnState.columnId);
 
     column.title = title;
+    column.headerColor = colorValue;
+    state.updateColumnState.headerColor = colorValue;
 
     this.updateStateAndLocalStorage(state);
     this.handleUpdateColumnModalClose();
@@ -277,8 +296,11 @@ class App extends React.Component {
     const title = e.currentTarget.parentElement.parentElement.parentElement
         .querySelector('.column__header .column__title').innerText;
     const state = Object.assign({}, this.state);
+    const column = state.columns.find((column) => column.id === columnId);
     
     state.updateColumnState.columnId = columnId;
+    state.updateColumnState.headerColor = column.headerColor;
+    document.getElementById('header-color-select').value = column.headerColor;
     state.updateColumnState.title = title;
     this.updateStateAndLocalStorage(state);
     
@@ -360,6 +382,8 @@ class App extends React.Component {
         />
         <UpdateColumnModal
           title={this.state.updateColumnState.title}
+          headerColor={this.state.updateColumnState.headerColor}
+          colors={this.state.colors}
           handleUpdateColumnModalClose={this.handleUpdateColumnModalClose}
           handleUpdateColumn={this.handleUpdateColumn}
           handleDeleteColumn={this.handleDeleteColumn}

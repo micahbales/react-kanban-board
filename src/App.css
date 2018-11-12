@@ -1,7 +1,21 @@
+:root {
+  --red: #d9534f;
+  --gray: #888;
+  --white: #f0f0f0;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Lato');
+
+body {
+  background-color: var(--white);
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
+}
+
+select, .button {
+  cursor: pointer;
 }
 
 .column__title {
@@ -27,7 +41,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
   justify-content: center;
   width: 100%;
-  border: 1px dashed gray;
+  border: 1px dashed var(--gray);
   align-items: center;
   cursor: pointer;
   max-height: 75px;
@@ -35,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .column__header {
-  border: 1px solid gray;
+  border: 1px solid var(--gray);
   padding-top: 7px;
   text-align: center;
   height: 30px;
@@ -78,7 +92,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card {
-  border: 1px solid gray;
+  border: 1px solid var(--gray);
   display: flex;
   justify-content: space-between;
   padding: 5px;
@@ -99,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0px 2px;
 }
 
-.text--white {color: #f0f0f0;}
+.text--white {color: var(--white);}
 
 .hidden {display: none}
 
@@ -118,11 +132,11 @@ h1, h2, h3, h4, h5, h6 {
   background-color: rgba(0,0,0,0.4);
 }
 
-.modal .modal-content {
-  background-color: #fefefe;
+.modal-content {
+  background-color: var(--white);
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 1px solid var(--gray);
   width: 50%;
   text-align: center;
 }
@@ -131,16 +145,29 @@ h1, h2, h3, h4, h5, h6 {
   height: 150px;
 }
 
-.modal .modal-content .form-row {
+.modal-content .form-row {
   margin: 20px 0px;
 }
 
-.modal .modal-content input {
-    font-size: 16px;
-    height: 25px;
-    margin: 7px 0px;
-    text-align: center;
-    width: 50%;
+.modal-content input, .modal-content select, .modal-content button {
+  border-radius: 2px;
+  font-size: 16px;
+  height: 25px;
+  margin: 7px auto;
+  text-align: center;
+  width: 50%;
+}
+
+.form-row.delete-column {
+  color: var(--red);
+}
+
+.delete-column.h4 {
+  margin-bottom: -10px;
+}
+
+.delete-column .button {
+  color: var(--red);
 }
 
 .update-column-modal__delete-button, .update-column-modal__update-button {
@@ -149,7 +176,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .modal .close {
-  color: #aaaaaa;
+  color: var(--gray);
   cursor: pointer;
   float: right;
   font-size: 28px;

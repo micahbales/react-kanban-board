@@ -72,6 +72,7 @@ class App extends React.Component {
     },
     updateColumnState: {
       columnId: null,
+      columnOrder: null,
       headerColor: '',
       title: ''
     }
@@ -173,10 +174,14 @@ class App extends React.Component {
     const {columnId, cardOrder} = this.state.updateCardState;
     const column = find(state.columns, {id: columnId});
     
-    // Remove deleted card from state
-    column.cards = filter(
-      column.cards, 
-      (card) => card.order !== cardOrder
+    column.cards = map(
+      // Filter out deleted card from state
+      filter(column.cards, (card) => card.order !== cardOrder),
+      // Update card order to account for missing card
+      (card) => {
+        card.order = card.order > cardOrder ? card.order - 1 : card.order;
+        return card;
+      }
     );
     
     this.updateStateAndLocalStorage(state);
@@ -272,23 +277,31 @@ class App extends React.Component {
     e.preventDefault();
 
     const state = Object.assign({}, this.state);
-    const columnId = this.state.updateColumnState.columnId;
+    const columnOrder = this.state.updateColumnState.columnOrder;
 
-    state.columns = filter(state.columns, (column) => column.id !== columnId);
+    state.columns = map(
+      // Filter out column to be deleted
+      filter(state.columns, (column) => column.order !== columnOrder),
+      // Update column order to account for missing column
+      (column) => {
+        column.order = column.order > columnOrder ? column.order - 1: column.order;
+        return column;
+      }
+    );
     
     this.updateStateAndLocalStorage(state);
     this.handleUpdateColumnModalClose();
   }
 
   handleUpdateColumnModalOpen(e) {
-    const columnId = Number(e.currentTarget
-          .parentElement.parentElement.parentElement.getAttribute('data-column-id'));
+    const columnOrder = Number(e.currentTarget
+          .parentElement.parentElement.parentElement.getAttribute('data-column-order'));
     const title = e.currentTarget.parentElement.parentElement.parentElement
         .querySelector('.column__header .title').innerText;
     const state = Object.assign({}, this.state);
-    const column = state.columns.find((column) => column.id === columnId);
+    const column = state.columns.find((column) => column.order === columnOrder);
     
-    state.updateColumnState.columnId = columnId;
+    state.updateColumnState.columnOrder = columnOrder;
     state.updateColumnState.headerColor = column.headerColor;
     document.getElementById('header-color-select').value = column.headerColor;
     state.updateColumnState.title = title;

@@ -149,8 +149,7 @@ class App extends React.Component {
     if (!text) return;
 
     // Set order for new card
-    const lastCard = column.cards[column.cards.length - 1];
-    const newCardOrder = lastCard ? lastCard.order + 1 : 0;
+    const newCardOrder = column.cards.length ? column.cards.length : 0;
     // Add new card to state
     column.cards.push({
       order: newCardOrder,
@@ -225,7 +224,6 @@ class App extends React.Component {
     
     state.updateCardState.columnId = columnId;
     state.updateCardState.cardOrder = cardOrder;
-    console.log(e.currentTarget);
     state.updateCardState.text = e.currentTarget
         .parentElement.parentElement.querySelector('.card__text').innerText
     
@@ -313,7 +311,7 @@ class App extends React.Component {
     const columnId = Number(e.currentTarget
           .parentElement.parentElement.parentElement.getAttribute('data-column-id'));
     const title = e.currentTarget.parentElement.parentElement.parentElement
-        .querySelector('.column__header .column__title').innerText;
+        .querySelector('.column__header .title').innerText;
     const state = Object.assign({}, this.state);
     const column = state.columns.find((column) => column.id === columnId);
     
@@ -335,11 +333,11 @@ class App extends React.Component {
   getColumnState(e, direction) {
     const columnElement = e.currentTarget.parentElement.parentElement;
     const columnOrder = Number(columnElement.getAttribute('data-column-order'));
-    const swapcolumnOrder = direction === ColumnMoveDirection.RIGHT ? columnOrder + 1 : columnOrder - 1;
+    const swapColumnOrder = direction === ColumnMoveDirection.RIGHT ? columnOrder + 1 : columnOrder - 1;
     const state = Object.assign({}, this.state);
     
     const column = state.columns.find((column) => column.order === columnOrder);
-    const swapColumn = state.columns.find((column) => column.order === swapcolumnOrder);
+    const swapColumn = state.columns.find((column) => column.order === swapColumnOrder);
 
     return [column, swapColumn, state];
   }

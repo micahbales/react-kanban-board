@@ -13,10 +13,10 @@ function ColumnHeader(props) {
             !(position === Position.FIRST) ? 'invisible' : '';
     return (
         <div className='column__header' style={headerStyle}>
-            <i className={`fas fa-chevron-left column__left-button 
+            <i className={`fas fa-chevron-left left-button 
                 ${hideButtons} ${hideLeftButton}`} onClick={props.handleMoveColumnLeft}></i>
-            <h3 className='column__title text--white'>{props.title}</h3>
-            <i className={`fas fa-chevron-right column__right-button 
+            <h3 className='title text--white'>{props.title}</h3>
+            <i className={`fas fa-chevron-right right-button 
                 ${hideButtons} ${hideRightButton}`} onClick={props.handleMoveColumnRight}></i>
         </div>
     );

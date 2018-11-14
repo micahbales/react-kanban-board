@@ -18,7 +18,7 @@ select, .button {
   cursor: pointer;
 }
 
-.column__title {
+.column__header .title {
   display: inline;
 }
 
@@ -77,12 +77,17 @@ select, .button {
   margin: 3px;
 }
 
-.column__right-button {
+.column__header i {
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.column__header .right-button {
   float: right;
   margin-right: 5%;
 }
 
-.column__left-button {
+.column__header .left-button {
   float: left;
   margin-left: 5%;
 }

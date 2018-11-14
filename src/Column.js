@@ -42,7 +42,7 @@ class Column extends React.Component {
                             card={card}
                             key={i}
                             numberOfCardsInColumn={this.props.column.cards.length}
-                            handleDeleteCardModalOpen={this.props.handleDeleteCardModalOpen}
+                            handleUpdateCardModalOpen={this.props.handleUpdateCardModalOpen}
                             handleAddCardModelClose={this.props.handleAddCardModelClose}
                             handleMoveCardUp={this.props.handleMoveCardUp}
                             handleMoveCardDown={this.props.handleMoveCardDown}

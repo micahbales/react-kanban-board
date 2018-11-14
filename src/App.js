@@ -95,9 +95,6 @@ class App extends React.Component {
         value: '#E8741E'
       }
     ],
-    addCardState: {
-      columnId: null
-    },
     updateCardState: {
       columnId: null,
       cardOrder: null
@@ -145,7 +142,7 @@ class App extends React.Component {
   handleAddCard(e) {
     e.preventDefault();
 
-    const columnId = this.state.addCardState.columnId;
+    const columnId = this.state.updateCardState.columnId;
     const state = Object.assign({}, this.state);
     const column = find(state.columns, {id: columnId});
     const text = e.currentTarget.parentElement.querySelector('#text').value;
@@ -166,7 +163,7 @@ class App extends React.Component {
 
   handleAddCardModalOpen(e) {
     const state = Object.assign({}, this.state);
-    state.addCardState.columnId = Number(e.currentTarget
+    state.updateCardState.columnId = Number(e.currentTarget
           .parentElement.parentElement.parentElement.getAttribute('data-column-id'));
     this.setState(state);
     document.querySelector('.modal.add-card-modal')
@@ -228,6 +225,9 @@ class App extends React.Component {
     
     state.updateCardState.columnId = columnId;
     state.updateCardState.cardOrder = cardOrder;
+    console.log(e.currentTarget);
+    state.updateCardState.text = e.currentTarget
+        .parentElement.parentElement.querySelector('.card__text').innerText
     
     this.updateStateAndLocalStorage(state);
     document.querySelector('.modal.update-card-modal')
@@ -392,6 +392,7 @@ class App extends React.Component {
           handleAddCard={this.handleAddCard}
         />
         <UpdateCardModal
+          text={this.state.updateCardState.text}
           handleUpdateCardModalClose={this.handleUpdateCardModalClose}
           handleUpdateCard={this.handleUpdateCard}
           handleDeleteCard={this.handleDeleteCard}

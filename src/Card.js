@@ -23,7 +23,7 @@ class Card extends React.Component {
             <div className='card' data-card-order={this.props.card.order}>
                 <div className='card__text'>{this.props.card.text}</div>
                 <div className='card__buttons'>
-                    <i className='fas fa-pencil-alt' onClick={this.props.handleUpdateCardModalOpen}></i>
+                    <i className='card__update-button fas fa-pencil-alt' onClick={this.props.handleUpdateCardModalOpen}></i>
                     <NavButtons 
                         position={cardPosition}
                         handleMoveCardUp={this.props.handleMoveCardUp}

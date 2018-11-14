@@ -108,7 +108,7 @@ select, .button {
   display: flex;
 }
 
-.card__up-button, .card__down-button, .card__delete-button {
+.card__up-button, .card__down-button, .card__update-button {
   cursor: pointer;
   margin: 0px 2px;
 }

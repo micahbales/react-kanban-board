@@ -13,7 +13,8 @@ class UpdateCardModal extends React.Component {
     
                     <form>
                         <input type='text' autoComplete='off' id='text' 
-                                placeholder='Text' className='modal-input'/>
+                                placeholder='Text' className='modal-input'
+                                defaultValue={this.props.text} />
 
                         <button className='button update-card-modal__update-button' 
                                 onClick={this.props.handleUpdateCard}>

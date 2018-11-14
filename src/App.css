@@ -1,6 +1,7 @@
 :root {
-  --red: #d9534f;
+  --blue: #566DFB;
   --gray: #888;
+  --red: #d9534f;
   --white: #f0f0f0;
 }
 
@@ -16,6 +17,11 @@ h1, h2, h3, h4, h5, h6 {
 
 select, .button {
   cursor: pointer;
+}
+
+.button.update {
+  color: var(--white);
+  background-color: var(--blue);
 }
 
 .column__header .title {
@@ -163,15 +169,18 @@ select, .button {
   width: 50%;
 }
 
-.form-row.delete-column {
+.form-row.delete {
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px var(--red);
   color: var(--red);
+  padding: 3px 0px;
 }
 
-.delete-column.h4 {
-  margin-bottom: -10px;
+.delete p {
+  margin-top: -10px;
 }
 
-.delete-column .button {
+.delete .button {
   color: var(--red);
 }
 

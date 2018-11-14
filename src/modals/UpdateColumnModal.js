@@ -40,16 +40,16 @@ class UpdateColumnModal extends React.Component {
                                 }
                             </select>
                             
-                            <button className='button update-column-modal__update-button' 
+                            <button className='button update update-column-modal__update-button' 
                                     onClick={this.props.handleUpdateColumn}>
                                 UPDATE
                             </button>
                         </div>
 
-                        <div className='form-row delete-column'>
+                        <div className='form-row delete'>
                             <h4>DELETE COLUMN</h4>
                             <p>(Will also delete all cards!)</p>
-                            <button className='button update-column-modal__delete-button' 
+                            <button className='button delete update-column-modal__delete-button' 
                                 onClick={this.props.handleDeleteColumn}>
                                 DELETE
                             </button>

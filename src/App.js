@@ -29,15 +29,7 @@ class App extends React.Component {
     {
       order: 1,
       text: 'to get you started'
-    },
-    // {
-    //   order: 2,
-    //   text: 'seven eight nine'
-    // },
-    // {
-    //   order: 3,
-    //   text: 'ten eleven twelve'
-    // },
+    }
   ];
 
   defaultState = {
@@ -50,28 +42,7 @@ class App extends React.Component {
         headerColor: '#8E6E95',
         cards: this.defaultCards,
         title: 'Sample Column'
-      },
-      // {
-      //   id: 2,
-      //   order: 1,
-      //   headerColor: '#39A59C',
-      //   cards: this.defaultCards,
-      //   title: 'Second Column'
-      // },
-      // {
-      //   id: 1,
-      //   order: 2,
-      //   headerColor: '#344759',
-      //   cards: this.defaultCards,
-      //   title: 'Third Column'
-      // },
-      // {
-      //   id: 0,
-      //   order: 3,
-      //   headerColor: '#E8741E',
-      //   cards: this.defaultCards,
-      //   title: 'Fourth Column'
-      // },
+      }
     ]
   }
 
@@ -185,8 +156,7 @@ class App extends React.Component {
     const text = e.currentTarget.parentElement.querySelector('#text').value;
     if (!text) return;
 
-    const columnId = this.state.updateCardState.columnId;
-    const cardOrder = this.state.updateCardState.cardOrder;
+    const {columnId, cardOrder} = this.state.updateCardState;
     const column = find(state.columns, {id: columnId});
     const card = filter(column.cards, (card) => card.order === cardOrder)[0];
 
@@ -200,8 +170,7 @@ class App extends React.Component {
     e.preventDefault();
 
     const state = Object.assign({}, this.state);
-    const columnId = this.state.updateCardState.columnId;
-    const cardOrder = this.state.updateCardState.cardOrder;
+    const {columnId, cardOrder} = this.state.updateCardState;
     const column = find(state.columns, {id: columnId});
     
     // Remove deleted card from state
@@ -245,9 +214,13 @@ class App extends React.Component {
     if (!title) return;
 
     // Set id & order for new column
-    const highestExistingId = reduce(state.columns, (num, column) => column.id >= num ? column.id : num, 0);
+    const highestExistingId = reduce(state.columns, (num, column) => {
+      return column.id >= num ? column.id : num;
+    }, 0);
     const columnId = highestExistingId + 1;
-    const highestExistingOrder = reduce(state.columns, (num, column) => column.order >= num ? column.order : num, 0);
+    const highestExistingOrder = reduce(state.columns, (num, column) => {
+      return column.order >= num ? column.order : num;
+    }, 0);
     const columnOrder = highestExistingOrder + 1;
 
     // Add new card to state
@@ -357,11 +330,11 @@ class App extends React.Component {
   }
 
   handleMovement(e, direction, getItemState) {
-    const [card, previousCard, state] = getItemState(e, direction);
-    // Swap order of two cards
-    let swap = card.order;
-    card.order = previousCard.order;
-    previousCard.order = swap;
+    const [item, previousItem, state] = getItemState(e, direction);
+    // Swap order of two items
+    let swap = item.order;
+    item.order = previousItem.order;
+    previousItem.order = swap;
     // Save to state
     this.updateStateAndLocalStorage(state);
   }

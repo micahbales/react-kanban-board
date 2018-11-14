@@ -12,20 +12,24 @@ class UpdateCardModal extends React.Component {
                     <h2>Update Card</h2>
     
                     <form>
-                        <input type='text' autoComplete='off' id='text' 
-                                placeholder='Text' className='modal-input'
-                                defaultValue={this.props.text} />
+                        <div className='form-row'>
+                            <input type='text' autoComplete='off' id='text' 
+                                    placeholder='Text' className='modal-input'
+                                    defaultValue={this.props.text} />
 
-                        <button className='button update-card-modal__update-button' 
-                                onClick={this.props.handleUpdateCard}>
-                            UPDATE
-                        </button>
+                            <button className='button update' 
+                                    onClick={this.props.handleUpdateCard}>
+                                UPDATE
+                            </button>
+                        </div>
 
-                        <h4>DELETE CARD</h4>        
-                        <button className='button delete-card-modal__submit' 
-                                onClick={this.props.handleDeleteCard}>
-                            DELETE
-                        </button>
+                        <div className='form-row delete'>
+                            <h4>DELETE CARD</h4>        
+                            <button className='button delete' 
+                                    onClick={this.props.handleDeleteCard}>
+                                DELETE
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
